@@ -19,8 +19,3 @@ Route.group(() => {
   Route.post("/logout", "AuthController.logout").middleware("auth");
 }).prefix("/auth");
 
-Route.group(() => {
-  Route.get("/:key", "S3sController.getObjectUrl");
-}).prefix("/s3");
-
-Route.post('/converter', 'ConversionsController.convert');
