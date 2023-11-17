@@ -26,7 +26,7 @@ Server.middleware.register([
 
 /*
 |--------------------------------------------------------------------------
-| Named middleware
+| Named middlewar
 |--------------------------------------------------------------------------
 |
 | Named middleware are defined as key-value pair. The value is the namespace
