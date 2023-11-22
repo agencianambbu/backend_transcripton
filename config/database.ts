@@ -38,6 +38,9 @@ const databaseConfig: DatabaseConfig = {
     pg: {
       client: "pg",
       connection: {
+        ssl: {
+          rejectUnauthorized: false,
+        },
         host: databaseUrl.hostname,
         port: Number(databaseUrl.port),
         user: databaseUrl.username,
