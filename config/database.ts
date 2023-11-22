@@ -24,8 +24,6 @@ const databaseConfig: DatabaseConfig = {
   connection: Env.get("DB_CONNECTION"),
 
   connections: {
-
-
     /*
     |--------------------------------------------------------------------------
     | PostgreSQL config
@@ -40,11 +38,11 @@ const databaseConfig: DatabaseConfig = {
     pg: {
       client: "pg",
       connection: {
-        host: databaseUrl.host,
-        port: Env.get("PG_PORT"),
-        user: Env.get("PG_USER"),
-        password: Env.get("PG_PASSWORD", ""),
-        database: Env.get("PG_DB_NAME"),
+        host: databaseUrl.hostname,
+        port: Number(databaseUrl.port),
+        user: databaseUrl.username,
+        password: databaseUrl.password,
+        database: databaseUrl.pathname.split("/")[1],
       },
       migrations: {
         naturalSort: true,
