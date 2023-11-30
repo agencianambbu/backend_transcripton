@@ -19,3 +19,8 @@ Route.group(() => {
   Route.post("/logout", "AuthController.logout").middleware("auth");
 }).prefix("/auth");
 
+
+Route.group(() => {
+  Route.post("/register", "UsersController.register");
+}).prefix("/users");
+
