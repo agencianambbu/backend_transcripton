@@ -8,25 +8,26 @@ WORKDIR /app
 COPY package*.json ./
 
 # Instala as dependências
-RUN npm ci --only=production
+RUN npm ci --only=production && npm cache clean --force
 
 # Copia o resto do código da aplicação
 COPY . .
 
 # Cria um usuário não-root para executar a aplicação
-RUN addgroup -g 1001 -S nodejs
-RUN adduser -S nextjs -u 1001
+RUN addgroup -g 1001 -S appuser
+RUN adduser -S appuser -u 1001 -G appuser
 
-# Muda a propriedade dos arquivos para o usuário nodejs
-RUN chown -R nextjs:nodejs /app
-USER nextjs
+# Garante que as pastas necessárias existem e têm as permissões corretas
+RUN mkdir -p /app/database /app/providers /app/contracts && \
+    chown -R appuser:appuser /app
 
-# Expõe a porta que a aplicação usa (geralmente 3000 ou a definida no PORT)
-EXPOSE 3000
+USER appuser
+
+# Expõe a porta (padrão Heroku usa $PORT ou 3000)
+EXPOSE $PORT
 
 # Define variáveis de ambiente
 ENV NODE_ENV=production
-ENV PORT=3000
 
 # Comando para executar a aplicação
 CMD ["npm", "start"]
