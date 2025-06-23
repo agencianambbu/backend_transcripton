@@ -38,9 +38,7 @@ const databaseConfig: DatabaseConfig = {
     pg: {
       client: "pg",
       connection: {
-        ssl: {
-          rejectUnauthorized: false,
-        },
+        ssl: false,  // <-- aqui!
         host: databaseUrl.hostname,
         port: Number(databaseUrl.port),
         user: databaseUrl.username,
