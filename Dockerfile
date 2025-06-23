@@ -30,4 +30,4 @@ EXPOSE $PORT
 ENV NODE_ENV=production
 
 # Comando para executar a aplicação
-CMD ["npm", "start"]
+CMD ["npm", "node", "build"]
