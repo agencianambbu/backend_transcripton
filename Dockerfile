@@ -1,23 +1,32 @@
-# Etapa de build
-FROM node:20-alpine as build
+# Use a imagem oficial do Node.js como base
+FROM node:18-alpine
 
+# Define o diretório de trabalho dentro do container
 WORKDIR /app
 
+# Copia os arquivos de dependências primeiro (para aproveitar o cache do Docker)
 COPY package*.json ./
-RUN npm install
 
+# Instala as dependências
+RUN npm ci --only=production
+
+# Copia o resto do código da aplicação
 COPY . .
-RUN npm run build
 
-# Etapa de produção
-FROM node:20-alpine
+# Cria um usuário não-root para executar a aplicação
+RUN addgroup -g 1001 -S nodejs
+RUN adduser -S nextjs -u 1001
 
-WORKDIR /app
+# Muda a propriedade dos arquivos para o usuário nodejs
+RUN chown -R nextjs:nodejs /app
+USER nextjs
 
-COPY --from=build /app ./
-COPY --from=build /app/build ./
+# Expõe a porta que a aplicação usa (geralmente 3000 ou a definida no PORT)
+EXPOSE 3000
 
+# Define variáveis de ambiente
 ENV NODE_ENV=production
-EXPOSE 3333
+ENV PORT=3000
 
-CMD ["node", "build/server.js"]
+# Comando para executar a aplicação
+CMD ["npm", "start"]
